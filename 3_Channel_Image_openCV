@@ -1,0 +1,38 @@
+import os
+import cv2
+import numpy as np
+
+
+image1_dir = "Path to first Directory/"
+image2_dir = "Path to Second Directory/"
+image3_dir = "Path to Third Directory/"
+
+targetFolder = "Target Folder Path/"
+
+# Create the list of the name of all the images from first folder
+list = os.listdir(image1_dir)
+
+number_of_images = len(list)
+
+for r in range(number_of_images):
+    img = image1_dir+list[r]
+    name = list[r].split("T1.png")[0]
+    #print (name)
+    img1_path = image1_dir + name + "T1.png"
+    img2_path = image2_dir + name + "T2.png"
+    img3_path = image3_dir + name + "flair.png"
+
+    C1 = cv2.imread(img1_path ,cv2.IMREAD_GRAYSCALE)
+    C2 = cv2.imread(img2_path ,cv2.IMREAD_GRAYSCALE)
+    C3 = cv2.imread(img3_path ,cv2.IMREAD_GRAYSCALE)
+    print(C1.shape)
+
+    multichannel_img = np.zeros((C1.shape[0],C1.shape[1],3))
+
+    multichannel_img[:,:,0] = C1
+    multichannel_img[:,:,1] = C2
+    multichannel_img[:,:,2] = C3
+
+    writer = targetFolder + name + "3channelImage.png"
+    cv2.imwrite(writer, multichannel_img)
+    print (name + " Converted")
