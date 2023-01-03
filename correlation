@@ -1,0 +1,33 @@
+import numpy as np
+from scipy import signal
+from scipy.stats import pearsonr
+from imageio import imread
+import os
+import random
+
+# function to find the correlation between two images
+def find_correlation(image1, image2):
+  # read the images and convert them to grayscale
+  img1 = imread(image1, as_gray=True)
+  img2 = imread(image2, as_gray=True)
+
+  # compute the correlation using scipy's built-in function
+  correlation, pvalue = pearsonr(img1.flatten(), img2.flatten())
+
+  return correlation
+
+# select 100 random images from the folder
+folder = "Path to Folder"
+images = os.listdir(folder)
+random.shuffle(images)
+images = images[:100]
+
+# compute the correlation with the target image
+target_image = "path to target image"
+correlations = []
+for image in images:
+  correlations.append(find_correlation(os.path.join(folder, image), target_image))
+
+# print the correlations
+print("The Correlations Mean : \n")
+print(np.mean(correlations))
