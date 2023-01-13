@@ -1,0 +1,20 @@
+import os
+from PyPDF2 import PdfFileReader, PdfMerger
+
+def merge_pdfs(path):
+    pdf_files = [f for f in os.listdir(path) if f.endswith(".pdf")]
+    merger = PdfMerger()
+    invalid_pdfs = []
+    for pdf in pdf_files:
+        try:
+            merger.append(path + pdf)
+        except:
+            invalid_pdfs.append(pdf)
+    merger.write(path + "merged.pdf")
+    if invalid_pdfs:
+        print("Following pdfs are invalid and were not added to merge:")
+        for pdf in invalid_pdfs:
+            print(pdf)
+
+path = "Path_to_Folder_with_PDF_Files/"
+merge_pdfs(path)
